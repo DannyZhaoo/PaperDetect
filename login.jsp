@@ -21,7 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <link rel="stylesheet" type="text/css" href="css/bootstrap-dialog.min.css">
   <script type="text/javascript" src="js/bootstrap-dialog.min.js"></script>
   <script type="text/javascript" src="js/alertTool.js"></script>
-  <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery.cookie/1.4.1/jquery.cookie.js"></script>
+  <script type="text/javascript" src="js/jquery.cookie.js"></script>
   <link rel="stylesheet" type="text/css" href="css/pagecontent.css">
   <link rel="stylesheet" type="text/css" href="css/login.css">
   <style type="text/css">

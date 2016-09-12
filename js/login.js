@@ -5,23 +5,21 @@ var cookieName_autologin = "LOGIN_AUTO_TEST";
 
 //得到Cookie信息
 function getUserInfoByCookie() {
-  var uname = getCookie(cookieName_username);
+  var uname = getCookie(cookieName_username);//获取学号
   if (uname != null && !uname.toString().isnullorempty()) {
     GetObj('user').value = uname;
   }
 
-  var upass = getCookie(cookieName_password);
+  var upass = getCookie(cookieName_password);//获取密码
   if (upass != null && !upass.toString().isnullorempty()) {
-    GetObj('pwd2').type = 'password';
+    //GetObj('pwd2').type = 'password';
     GetObj('pwd2').value = upass;
   }
-  var autologin = getCookie(cookieName_autologin);
-  if (autologin != null && !autologin.toString().isnullorempty())
-    if (autologin.toString().trim() == "true") {
+  // var autologin = getCookie(cookieName_autologin);
+  alert(uname);
+  alert(upass);
+  if (!uname.value.trim().isnullorempty()&&!upass.value.tirm().isnullorempty())
       GetObj('ck_rmbUser').checked = true;
-    } else {
-      GetObj('ck_rmbUser').checked = false;
-    }
 }
 
 $(document).ready(function() {
@@ -48,7 +46,7 @@ $(document).ready(function() {
     }
   });
 
-
+  //点击后，如果不是checked，就需要取消cookie
   $("#ck_rmbUser").bind("click", function () {
     if(!$('#ck_rmbUser').checked){
       delCookie(cookieName_username);
@@ -121,13 +119,13 @@ $(document).ready(function() {
     //取消以前的信息
     delCookie(cookieName_username);
     delCookie(cookieName_password);
-    var autologin = GetObj('ck_rmbUser');
+    var autoSave = GetObj('ck_rmbUser');
     //保存在新的cookie中
-    if (autologin.checked) {
-      SetCookie(cookieName_username, $("#user").val(), 7);
+    if (autoSave.checked) {
+      SetCookie(cookieName_username, $("#user").val(), 7);//保存到cookie中7天
       SetCookie(cookieName_password, $("#pwd2").val(), 7);
     }
-    SetCookie(cookieName_autologin, autologin.checked, 7);
+    //SetCookie(cookieName_autologin, autolSave.checked, 7);
     if(($('#user').val().length != 0) &&($('#pwd2').val().length !=0 )){
     	 $.ajax({
     	      type: 'post',
