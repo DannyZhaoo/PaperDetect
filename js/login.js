@@ -16,10 +16,8 @@ function getUserInfoByCookie() {
     GetObj('pwd2').value = upass;
   }
   // var autologin = getCookie(cookieName_autologin);
-  alert(uname);
-  alert(upass);
-  if (!uname.value.trim().isnullorempty()&&!upass.value.tirm().isnullorempty())
-      GetObj('ck_rmbUser').checked = true;
+  if (!uname.toString().isnullorempty()&&!upass.toString().isnullorempty())
+    GetObj('ck_rmbUser').checked = true;
 }
 
 $(document).ready(function() {
@@ -52,7 +50,7 @@ $(document).ready(function() {
       delCookie(cookieName_username);
       delCookie(cookieName_password);
       delCookie(cookieName_autologin);
-  }
+    }
 
   });
   $('#pwd2').bind('change', function() {
@@ -70,29 +68,41 @@ $(document).ready(function() {
   
   $('#denglu').click(function() {
 
-      if(($('#user').val().length == 0)||($('#pwd2').val().length == 0)){
-        if ($('#user').val().length == 0) {
-          $('#user').css('border-color', 'red');
-        }
-         if ($('#pwd2').val().length == 0) {
-          $('#pwd2').css('border-color', 'red');
-        }
-        alertWarning("内容不可以为空！");
-        return;
-      }else if(!(/[2-4](08|09|10|11|12|13|14|15)\d{5}/).test($('#user').val())||!(/[0-9a-zA-Z]{5,20}/).test($('#pwd2').val())){
-        if(!(/[2-4](08|09|10|11|12|13|14|15)\d{5}/).test($('#user').val())){
-          $('#user').css('border-color', 'red');
-        }
-        if (!(/[0-9a-zA-Z]{5,20}/).test($('#pwd2').val())) {
-          $('#pwd2').css('border-color', 'red');
-        }
-        alertWarning("您的输入有问题！");
-        return;
+    if(($('#user').val().length == 0)||($('#pwd2').val().length == 0)){
+      if ($('#user').val().length == 0) {
+        $('#user').css('border-color', 'red');
       }
-      
-      $.ajax({
-          type: 'post',
-          url: 'login.action',
+      if ($('#pwd2').val().length == 0) {
+        $('#pwd2').css('border-color', 'red');
+      }
+      alertWarning("内容不可以为空！");
+      return;
+    }else if(!(/[2-4](08|09|10|11|12|13|14|15)\d{5}/).test($('#user').val())||!(/[0-9a-zA-Z]{5,20}/).test($('#pwd2').val())){
+      if(!(/[2-4](08|09|10|11|12|13|14|15)\d{5}/).test($('#user').val())){
+        $('#user').css('border-color', 'red');
+      }
+      if (!(/[0-9a-zA-Z]{5,20}/).test($('#pwd2').val())) {
+        $('#pwd2').css('border-color', 'red');
+      }
+      alertWarning("您的输入有问题！");
+      return;
+    }
+
+      //取消以前的信息
+      delCookie(cookieName_username);
+      delCookie(cookieName_password);
+      var autoSave = GetObj('ck_rmbUser');
+    //保存在新的cookie中
+    if (autoSave.checked) {
+      SetCookie(cookieName_username, $("#user").val(), 7);//保存到cookie中7天
+      //alert($('#user').val());
+      SetCookie(cookieName_password, $("#pwd2").val(), 7);
+      //alert($('#pwd2').val());
+    }
+
+    $.ajax({
+      type: 'post',
+      url: 'login.action',
           //asyc:false,
           data: {
             username: $('#user').val(),
@@ -115,43 +125,6 @@ $(document).ready(function() {
             }
           },
         });
-    });
-    //取消以前的信息
-    delCookie(cookieName_username);
-    delCookie(cookieName_password);
-    var autoSave = GetObj('ck_rmbUser');
-    //保存在新的cookie中
-    if (autoSave.checked) {
-      SetCookie(cookieName_username, $("#user").val(), 7);//保存到cookie中7天
-      SetCookie(cookieName_password, $("#pwd2").val(), 7);
-    }
-    //SetCookie(cookieName_autologin, autolSave.checked, 7);
-    if(($('#user').val().length != 0) &&($('#pwd2').val().length !=0 )){
-    	 $.ajax({
-    	      type: 'post',
-    	      url: 'login.action',
-    	      //asyc:false,
-    	      data: {
-    	        username: $('#user').val(),
-    	        password: $('#pwd2').val()
-    	      },
-    	      success: function(msg) {
-    	        if (msg == 0) {
-    	          alertWarning("用户名错误");
-    	          $('#user,#pwd2').val('');
-    	        }
-    	        if (msg == 2) {
-    	          alertWarning("密码错误");
-    	          $('#pwd2').val('');
-    	        }
-    	        if (msg == 1) {
-    	          location.href = 'students.jsp';
-    	        }
-    	        if (msg == -1) {
-    	          location.href = 'teacher.jsp';
-    	        }
-    	      },
-    	    });
-    }
-   
+  });
+
   });
