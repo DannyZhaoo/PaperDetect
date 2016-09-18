@@ -12,7 +12,7 @@ function getUserInfoByCookie() {
 
   var upass = getCookie(cookieName_password);//获取密码
   if (upass != null && !upass.toString().isnullorempty()) {
-    //GetObj('pwd2').type = 'password';
+    GetObj('pwd2').type = 'password';//没有这句，密码就是明文显示
     GetObj('pwd2').value = upass;
   }
   // var autologin = getCookie(cookieName_autologin);
